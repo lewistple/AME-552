@@ -1,6 +1,6 @@
 %% AME-552
 
-% HW2 Problem 1
+% HW2 Problem 2
 
 %% Clear
 
@@ -9,14 +9,15 @@ clear, clc, close all;
 %% Program Execution
 
 % Symbolic variables
-A = 1;
+alpha = 1;
+beta = 1;
+C = 0.9;
 D = 1;
-tau = 1;
-I = 1;
+M = 1;
 
 % Define the system
-f = @(x1, x2) x2;
-g = @(x1, x2) arrayfun(@g_func, x1, x2, A*ones(size(x1)), D*ones(size(x1)), tau*ones(size(x1)), I*ones(size(x1)));
+f = @(x1, x2) x2; 
+g = @(x1, x2) arrayfun(@g_func, x1, x2, alpha*ones(size(x1)), beta*ones(size(x1)), C*ones(size(x1)), D*ones(size(x1)), M*ones(size(x1)));
 
 % Define the grid
 [x1, x2] = meshgrid(-5: 0.5: 5, -5: 0.5: 5);
@@ -32,15 +33,13 @@ dx2 = dx2 ./ magnitude;
 
 % Plot boundaries
 figure; hold on;
-fun1 = @(x) (1/tau) * (-D-x);
-fun2 = @(x) (1/tau) * (D-x);
-fplot(fun1, 'k', LineWidth=2);
-fplot(fun2, 'b', LineWidth=2);
+xline(-D, 'k', LineWidth=2);
+xline(D, 'b', LineWidth=2);
 quiver(x1, x2, dx1, dx2, 'r');    % Quiver plot
 
 % Plot trajectories using ode45
-for x0 = -3:0.5:3                % Initial conditions
-    for y0 = -3:0.5:3
+for x0 = -5:2.5:5                 % Initial conditions
+    for y0 = -5:2.5:5
         [T, Y] = ode45(@(t, y) [f(y(1), y(2)); g(y(1), y(2))], [0, 10], [x0, y0]);
         plot(Y(:,1), Y(:,2), 'b'); % Trajectories
     end
@@ -50,27 +49,27 @@ end
 xlabel('x_1');
 ylabel('x_2');
 title('Phase Portrait');
-legend('\taux_2+x_1=-D', '\taux_2+x_1=D', 'Vector Field', 'Exact Solution');
+legend('x_1=-D', 'x_1=D', 'Vector Field', 'Exact Solution');
 axis equal;
 grid on;
 hold off;
 
 %% Functions
 
-function g = g_func(x1, x2, A, D, tau, I)
+function g = g_func(x1, x2, alpha, beta, C, D, M)
 
-    if tau*x2 + x1 >= D
+    if x1 < -D
     
-        g = -A/I;
+        g = -alpha*x2 - beta*x1 + beta*C + M;
     
-    elseif tau*x2 + x1 <= -D
+    elseif x1 > D
     
-        g = A/I;
+        g = -alpha*x2 - beta*x1 + beta*C - M;
     
     else
-
-        g = nan;
-
+    
+        g = -alpha*x2 - beta*x1 + beta*C;
+    
     end
 
 end

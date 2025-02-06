@@ -1,6 +1,6 @@
 %% AME-552
 
-% HW2 Problem 1 (Simulink)
+% HW2 Problem 3 (Simulink)
 
 %% Clear
 
@@ -8,20 +8,21 @@ clear, clc, close all;
 
 %% Setup
 
-% Symbolic variables
-A = 1;
-D = 1;
-tau = 1;
-I = 1;
+% % Symbolic variables
+% alpha = 1;
+% beta = 1;
+% C = 0.5;
+% D = 1;
+% M = 1;
 
 % Define error initial conditions
-e0_space = -1: 0.25: 1;
-de0_space = -1: 0.25: 1;
+e0_space = -5: 2: 5;
+de0_space = -5: 2: 5;
 
 % Define Simulink model
-mdl = 'AME552_HW2_P1_SimulinkModel';
+mdl = 'AME552_HW2_P3_SimulinkModel';
 load_system(mdl);
-set_param(mdl, "StopTime", "10");
+set_param(mdl, "StopTime", "5");
 
 % Define figure
 figure(1); hold on;
@@ -51,14 +52,12 @@ for i = 1: length(e0_space)
 end
 
 % Plot region boundaries
-fun1 = @(x) (1/tau) * (-D-x);
-fun2 = @(x) (1/tau) * (D-x);
-fplot(fun1, 'k', LineWidth=2);
-fplot(fun2, 'b', LineWidth=2);
+yline(-1, 'k', LineWidth=2);
+yline(1, 'b', LineWidth=2);
 
 % Plot properties
 grid on; axis equal;
 xlabel('$x_1 (e)$', 'Interpreter', 'latex');
 ylabel('$x_2 (\dot{e})$', 'Interpreter', 'latex');
 title('Phase Portrait');
-ylim([-2 2]);
+ylim([-5 5]);
