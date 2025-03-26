@@ -70,9 +70,9 @@ quiver(x1, x2, dx1, dx2, 'r');    % Quiver plot
 hold on;
 
 % Plot trajectories using ode45
-for x0 = -5:2.5:5                 % Initial conditions
-    for y0 = -5:2.5:5
-        [T, Y] = ode45(@(t, y) [f(y(1), y(2)); g(y(1), y(2))], [0, 10], [x0, y0]);
+for x0 = -5:1:5                 % Initial conditions
+    for y0 = -5:1:5
+        [T, Y] = ode45(@(t, y) [f(y(1), y(2)); g(y(1), y(2))], [0, 1], [x0, y0]);
         plot(Y(:,1), Y(:,2), 'b'); % Trajectories
     end
 end
